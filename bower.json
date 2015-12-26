@@ -1,0 +1,23 @@
+{
+  "name": "amazonstats",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Aljo Victor Gabot <aljo.gabot@gmail.com>"
+  ],
+  "license": "MIT",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "resources/assets/bower_components/",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "~2.1.4",
+    "bootstrap": "~3.3.6"
+  }
+}
