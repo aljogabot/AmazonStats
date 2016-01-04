@@ -17,7 +17,7 @@ CustomersList.prototype = {
 	{
 		var $self = this;
 		$http.post(
-			'/customers/?page=' + this.current_page,
+			'/customers?page=' + this.current_page,
 			{ search : this.search_text },
 			function( $json_response )
 			{

@@ -17,7 +17,7 @@ ProductsList.prototype = {
 	{
 		var $self = this;
 		$http.post(
-			'/products/?page=' + this.current_page,
+			'/products?page=' + this.current_page,
 			{ search : this.search_text },
 			function( $json_response )
 			{
