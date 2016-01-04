@@ -12,6 +12,9 @@
                 <li class="{{ $controller == 'TransactionsController' ? 'active' : '' }}">
                     <a href="{{ URL::route( 'transactions' ) }}">Transactions</a>
                 </li>
+                <li class="{{ $controller == 'TransactionItemsController' ? 'active' : '' }}">
+                    <a href="{{ URL::route( 'transaction-items' ) }}">Transaction Items</a>
+                </li>
                 <li class="{{ $controller == 'AmazonProductsController' ? 'active' : '' }}">
                     <a href="{{ URL::route( 'products' ) }}">Products</a>
                 </li>

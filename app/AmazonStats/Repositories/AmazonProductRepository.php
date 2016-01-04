@@ -6,8 +6,8 @@ use App\AmazonProduct;
 
 class AmazonProductRepository extends EloquentRepository {
 
-	public function __construct( AmazonProduct $customer )
+	public function __construct( AmazonProduct $product )
 	{
-		$this->model = $customer;
+		$this->model = $product;
 	}
 }

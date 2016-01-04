@@ -40,6 +40,14 @@ Route::group(['middleware' => ['web']], function () {
 				}
 			);
 
+			Route::group( [ 'prefix' => 'transaction-items' ],
+				function()
+				{
+					Route::get( '/', [ 'as' => 'transaction-items', 'uses' => 'TransactionItemsController@index' ] );
+					
+				}
+			);
+
 			Route::group( [ 'prefix' => 'products' ],
 				function()
 				{
