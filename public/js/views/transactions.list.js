@@ -17,7 +17,7 @@ TransactionsList.prototype = {
 	{
 		var $self = this;
 		$http.post(
-			'/transactions/?page=' + this.current_page,
+			'/transactions?page=' + this.current_page,
 			{ search : this.search_text },
 			function( $json_response )
 			{
