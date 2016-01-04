@@ -39,7 +39,7 @@ elixir(
 				'services/AjaxService.js',
 				'services/FormMessageService.js',
 				'services/BootstrapModalService.js',
-				'views/keywords.index.js'
+				'views/authentication.js'
 			],
 			'public/js/app-all.js'
 		).version( 'public/js/app-all.js', 'public/build' );

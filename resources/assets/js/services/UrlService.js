@@ -4,6 +4,12 @@ UrlService.prototype = {
 
 	redirect : function( $uri ) {
 		var $url = this.base() + '/' + $uri;
+
+		if( $uri.indexOf( this.base() ) == 0 )
+		{
+			$url = $uri;
+		}
+
 		$( location ).attr( 'href', $url );
 	},
 

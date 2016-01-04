@@ -1,31 +1,52 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Routes File
-|--------------------------------------------------------------------------
-|
-| Here is where you will register all of the routes in an application.
-| It's a breeze. Simply tell Laravel the URIs it should respond to
-| and give it the controller to call when that URI is requested.
-|
-*/
-
 Route::get('/', function () {
     return view('welcome');
 });
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
-|
-*/
-
 Route::group(['middleware' => ['web']], function () {
-    //
+
+	Route::get( '/', [ 'as' => 'home', 'uses' => 'AuthenticationController@index' ] );
+	Route::post( '/login', [ 'as' => 'login', 'uses' => 'AuthenticationController@login' ] );
+	Route::post( '/register', [ 'as' => 'register', 'uses' => 'AuthenticationController@register' ] );
+	Route::get( '/logout', 'AuthenticationController@logout' );
+
+	Route::group( [ 'middleware' => [ 'auth' ] ], 
+		function()
+		{
+			Route::group( [ 'prefix' => 'customers' ],
+				function()
+				{
+					Route::get( '/', [ 'as' => 'customers', 'uses' => 'CustomersController@index' ] );
+					Route::post( '/', [ 'as' => 'customers-list-ajax', 'uses' => 'CustomersController@listTable' ] );
+
+					Route::post( 'view/{id}', [ 'as' => 'view-customer', 'uses' => 'CustomersController@view' ] );
+					Route::post( 'save/{id}', [ 'as' => 'save-customer', 'uses' => 'CustomersController@save' ] );
+					Route::post( 'delete/{id}', [ 'as' => 'delete-customer', 'uses' => 'CustomersController@delete' ] );
+				}
+			);
+
+			Route::group( [ 'prefix' => 'transactions' ],
+				function()
+				{
+					Route::get( '/', [ 'as' => 'transactions', 'uses' => 'TransactionsController@index' ] );
+					Route::get( 'customer/{customerId}', [ 'as' => 'customer-transactions', 'uses' => 'TransactionsController@customer' ] );
+
+					Route::post( '/', [ 'as' => 'transactions-list-ajax', 'uses' => 'TransactionsController@listTable' ] );
+
+					Route::post( 'view/{id}', [ 'as' => 'view-transaction', 'uses' => 'TransactionsController@view' ] );
+					Route::post( 'save/{id}', [ 'as' => 'save-transaction', 'uses' => 'TransactionsController@save' ] );
+					Route::post( 'delete/{id}', [ 'as' => 'delete-transaction', 'uses' => 'TransactionsController@delete' ] );
+				}
+			);
+
+			Route::group( [ 'prefix' => 'products' ],
+				function()
+				{
+					Route::get( '/', [ 'as' => 'products', 'uses' => 'AmazonProductsController@index' ] );
+				}
+			);
+		}
+	);
+
 });

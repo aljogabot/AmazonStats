@@ -14,6 +14,19 @@ AjaxService.prototype = {
 			    },
 				success: function( $json_response ) {
 					callback( $json_response );
+				},
+				error: function( $error ) {
+					var $message = [];
+
+					$.each(
+						$error.responseJSON,
+						function( $key, $value )
+						{
+							$message.push( $key + ': ' + $value );
+						}
+					);
+
+					$FormMessageService.error( $message.join( '<br />' ) );
 				}
 			}
 		);
