@@ -35,9 +35,9 @@ class UserRepository extends EloquentRepository {
 		return $this->model->customers()->paginate( 10 );
 	}
 
-	public function hasCustomer( Customer $customer )
+	public function owns( $model )
 	{
-		return $this->model->id == $customer->user_id;
+		return $this->model->id == $model->user_id;
 	}
 
 	public function getAllTransactions()
@@ -49,6 +49,9 @@ class UserRepository extends EloquentRepository {
 
 	public function getAllProducts( $search = '' )
 	{
+		if( ! $this->model->id )
+			$this->model = \Auth::user();
+		
 		$search = trim( $search );
 
 		if( ! empty( $search ) )

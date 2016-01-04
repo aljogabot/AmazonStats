@@ -90,6 +90,6 @@ class CustomersController extends Controller
 
         $customer->delete();
 
-        return $this->json->success( 'Customer Saved Successfully ...' );   
+        return $this->json->success( 'Customer Deleted Successfully ...' );   
     }
 }

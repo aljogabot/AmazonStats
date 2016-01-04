@@ -23,7 +23,7 @@ class SaveTransactionRequest extends Request
         if( ! $transaction )
             return TRUE;
 
-        return \Auth::user()->hasCustomer( $transaction->customer );
+        return \Auth::user()->owns( $transaction->customer );
     }
 
     /**

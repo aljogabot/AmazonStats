@@ -44,6 +44,11 @@ Route::group(['middleware' => ['web']], function () {
 				function()
 				{
 					Route::get( '/', [ 'as' => 'products', 'uses' => 'AmazonProductsController@index' ] );
+					Route::post( '/', [ 'as' => 'products-list-ajax', 'uses' => 'AmazonProductsController@listTable' ] );
+
+					Route::post( 'view/{id}', [ 'as' => 'view-product', 'uses' => 'AmazonProductsController@view' ] );
+					Route::post( 'save/{id}', [ 'as' => 'save-product', 'uses' => 'AmazonProductsController@save' ] );
+					Route::post( 'delete/{id}', [ 'as' => 'delete-product', 'uses' => 'AmazonProductsController@delete' ] );
 				}
 			);
 		}

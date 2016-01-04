@@ -11,16 +11,16 @@ class CustomerPolicy
 
     public function show( User $user, Customer $customer )
     {
-        return $user->hasCustomer( $customer );
+        return $user->owns( $customer );
     }
 
     public function save( User $user, Customer $customer )
     {
-    	return $user->hasCustomer( $customer );
+    	return $user->owns( $customer );
     }
 
     public function delete( User $user, Customer $customer )
     {
-    	return $user->hasCustomer( $customer );
+    	return $user->owns( $customer );
     }
 }

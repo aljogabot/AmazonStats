@@ -22,11 +22,6 @@ class TransactionRepository extends EloquentRepository {
 			$user = \Auth::user();
 
 		$model = $this->model
-					/*->with( [ 'customer.user' => function( $query ) use ( $user )
-						{
-							$query->where( 'users.id', '=', $user->id );
-						}]
-					);*/
 					->select( 'transactions.*', 'customers.first_name AS customer_first_name', 'customers.last_name AS customer_last_name' )
 					->join( 'customers', 'customers.id', '=', 'transactions.customer_id' )
 					->join( 'users', 'users.id', '=', 'customers.user_id' );

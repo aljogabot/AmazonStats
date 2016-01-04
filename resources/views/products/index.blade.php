@@ -29,7 +29,7 @@
           		<th>Actions</th>
         	</tr>
       	</thead>
-      	<tbody id="customers-table-list">
+      	<tbody id="products-table-list">
         	@include( 'products.blocks.list' )
       	</tbody>
     </table>

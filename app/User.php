@@ -54,8 +54,8 @@ class User extends Authenticatable
         $this->attributes[ 'password' ] = bcrypt( $value );
     }  
 
-    public function hasCustomer( $customer )
+    public function owns( $model )
     {
-        return $this->id == $customer->user_id;
+        return $this->id == $model->user_id;
     }
 }

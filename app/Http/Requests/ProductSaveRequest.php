@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use App\Http\Requests\Request;
 
-class CustomerSaveRequest extends Request
+class ProductSaveRequest extends Request
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +18,7 @@ class CustomerSaveRequest extends Request
         if( $id == 0 )
             return TRUE;
 
-        return \Auth::user()->owns( \App\Customer::find( $id ) );
+        return \Auth::user()->owns( \App\AmazonProduct::find( $id ) );
     }
 
     /**
@@ -29,10 +29,9 @@ class CustomerSaveRequest extends Request
     public function rules()
     {
         return [
-            //
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email|max:225'
+            'sku' => 'required',
+            'name' => 'required',
+            'price' => 'required'
         ];
     }
 }

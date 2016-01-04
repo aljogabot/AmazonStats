@@ -11,16 +11,16 @@ class TransactionsPolicy
 
     public function show( User $user, Transaction $transaction )
     {
-        return $user->hasCustomer( $transaction->customer );
+        return $user->owns( $transaction->customer );
     }
 
     public function save( User $user, Transaction $transaction )
     {
-    	return $user->hasCustomer( $transaction->customer );	
+    	return $user->owns( $transaction->customer );	
     }
 
 	public function delete( User $user, Transaction $transaction )
     {
-        return $user->hasCustomer( $transaction->customer );
+        return $user->owns( $transaction->customer );
     }    
 }

@@ -115,6 +115,6 @@ class TransactionsController extends Controller
 
         $transaction->delete();
 
-        return $this->json->success( 'Transaction Saved Successfully ...' );   
+        return $this->json->success( 'Transaction Deleted Successfully ...' );   
     }
 }
