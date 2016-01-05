@@ -6,14 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class TransactionItem extends Model
 {
-    //
+    protected $fillable = [ 'amazon_product_id', 'quantity', 'payout' ];
+
     public function transaction()
     {
     	return $this->belongsTo( Transaction::class );
     }
 
-    public function product()
+    public function amazonProduct()
     {
-    	return $this->hasOne( AmazonProduct::class );
+    	return $this->belongsTo( AmazonProduct::class );
     }
 }

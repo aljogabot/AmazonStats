@@ -89,7 +89,7 @@ class TransactionsController extends Controller
         $transaction = $this->transactionRepository->getById( $id );
 
         if( $transaction && Gate::denies( 'save', $transaction ) )
-            return $this->json->error( 'You cannot alter other\'s transactions ...' );
+            return $this->json->error( 'You cannot alter other\'s Transactions ...' );
 
         if( ! $transaction )
             $transaction = new \App\Transaction;
@@ -108,10 +108,10 @@ class TransactionsController extends Controller
         $transaction = $this->transactionRepository->getById( $id );
 
         if( ! $transaction )
-            return $this->json->error( 'You cannot alter other\'s transactions ...' );
+            return $this->json->error( 'Transaction Not Found' );
 
         if( Gate::denies( 'delete', $transaction ) )
-            return $this->json->error( 'You cannot alter other\'s transactions ...' );
+            return $this->json->error( 'You cannot alter other\'s Transactions ...' );
 
         $transaction->delete();
 

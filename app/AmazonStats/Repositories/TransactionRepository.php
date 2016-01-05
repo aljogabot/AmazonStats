@@ -29,15 +29,20 @@ class TransactionRepository extends EloquentRepository {
 		if( ! empty( $search ) )
 		{
 			$model = $model->orWhere(
-				function( $query )
+				function( $query ) use( $search )
 				{
-					$query->where( 'amazon_order_id', 'LIKE', "%{$search}%" )
-							->where( 'recipient_email', 'LIKE', "%{$search}%" )
-							->where( 'recipient_name', 'LIKE', "%{$search}%" );
+					$query->orWhere( 'amazon_order_id', 'LIKE', "%{$search}%" )
+							->orWhere( 'recipient_email', 'LIKE', "%{$search}%" )
+							->orWhere( 'recipient_name', 'LIKE', "%{$search}%" );
 				}
 			);
 		}
 
 		return $model->where( 'users.id', '=', \Auth::id() )->paginate( 10 );
+	}
+
+	public function getAllTransactionItems()
+	{
+		return $this->model->items()->paginate( 10 );
 	}
 }

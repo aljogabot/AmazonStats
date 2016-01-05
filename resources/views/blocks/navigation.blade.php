@@ -18,6 +18,9 @@
                 <li class="{{ $controller == 'AmazonProductsController' ? 'active' : '' }}">
                     <a href="{{ URL::route( 'products' ) }}">Products</a>
                 </li>
+                <li class="{{ $controller == 'ImportController' ? 'active' : '' }}">
+                    <a href="{{ URL::route( 'import' ) }}">Import Data</a>
+                </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li>

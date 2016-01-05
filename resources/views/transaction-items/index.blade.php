@@ -24,13 +24,14 @@
         	<tr>
           		<th>#</th>
           		<th>Transaction ID</th>
+                <th>Customer Name</th>
           		<th>Product Name</th>
           		<th>Quantity</th>
                 <th>Payout</th>
                 <th>Actions</th>
         	</tr>
       	</thead>
-      	<tbody id="transactions-table-list">
+      	<tbody id="transaction-items-table-list">
         	@include( 'transaction-items.blocks.list' )
       	</tbody>
     </table>

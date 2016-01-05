@@ -18,11 +18,11 @@ class AmazonProduct extends Model
     }
 
     /**
-     * A Product Has Many Transactions
+     * A Product Has Many Transaction Items
      * @return Eloquent Relation ...
      */
-    public function transaction()
+    public function transactionItems()
     {
-    	return $this->hasMany( Transaction::class );
+    	return $this->hasMany( TransactionItem::class );
     }
 }

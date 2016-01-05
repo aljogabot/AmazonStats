@@ -16,7 +16,8 @@ class AuthServiceProvider extends ServiceProvider
         'App\Model' => 'App\Policies\ModelPolicy',
         \App\Customer::class => \App\Policies\CustomerPolicy::class,
         \App\Transaction::class => \App\Policies\TransactionsPolicy::class,
-        \App\AmazonProduct::class => \App\Policies\ProductPolicy::class
+        \App\AmazonProduct::class => \App\Policies\ProductPolicy::class,
+        \App\TransactionItem::class => \App\Policies\TransactionItemPolicy::class,
     ];
 
     /**

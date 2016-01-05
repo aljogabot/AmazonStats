@@ -44,7 +44,13 @@ Route::group(['middleware' => ['web']], function () {
 				function()
 				{
 					Route::get( '/', [ 'as' => 'transaction-items', 'uses' => 'TransactionItemsController@index' ] );
-					
+					Route::get( 'transaction', [ 'as' => 'transaction-transaction-items', 'uses' => 'TransactionItemsController@transaction' ] );
+
+					Route::post( '/', [ 'as' => 'transaction-items-list-ajax', 'uses' => 'TransactionItemsController@listTable' ] );
+
+					Route::post( 'view/{id}', [ 'as' => 'view-transaction-item', 'uses' => 'TransactionItemsController@view' ] );
+					Route::post( 'save/{id}', [ 'as' => 'save-transaction-item', 'uses' => 'TransactionItemsController@save' ] );
+					Route::post( 'delete/{id}', [ 'as' => 'delete-transaction-item', 'uses' => 'TransactionItemsController@delete' ] );
 				}
 			);
 
@@ -57,6 +63,14 @@ Route::group(['middleware' => ['web']], function () {
 					Route::post( 'view/{id}', [ 'as' => 'view-product', 'uses' => 'AmazonProductsController@view' ] );
 					Route::post( 'save/{id}', [ 'as' => 'save-product', 'uses' => 'AmazonProductsController@save' ] );
 					Route::post( 'delete/{id}', [ 'as' => 'delete-product', 'uses' => 'AmazonProductsController@delete' ] );
+				}
+			);
+
+			Route::group( [ 'prefix' => 'import' ],
+				function()
+				{
+					Route::get( '/', [ 'as' => 'import', 'uses' => 'ImportDataController@index' ] );
+					Route::get( 'process', [ 'as' => 'process-import', 'uses' => 'ImportDataController@process' ] );
 				}
 			);
 		}
