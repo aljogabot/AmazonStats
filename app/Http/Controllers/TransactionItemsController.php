@@ -38,7 +38,7 @@ class TransactionItemsController extends Controller
 
     public function transaction( $transactionId, TransactionRepository $transactionRepository )
     {
-    	$transaction = Transaction::find( $customerId );
+    	$transaction = Transaction::find( $transactionId );
 
     	if( Gate::denies( 'show', $transaction ) )
 			return redirect()->route( 'customers' );

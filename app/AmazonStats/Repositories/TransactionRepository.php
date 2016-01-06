@@ -43,6 +43,12 @@ class TransactionRepository extends EloquentRepository {
 
 	public function getAllTransactionItems()
 	{
-		return $this->model->items()->paginate( 10 );
+		return $this->model->items()
+					->select( 'customers.name AS customer_name', 'transaction_items.*', 'amazon_products.name AS amazon_product_name', 'transactions.amazon_order_id AS transaction_amazon_id' )
+					->join( 'amazon_products', 'amazon_products.id', '=', 'transaction_items.amazon_product_id' )
+					->join( 'transactions', 'transactions.id', '=', 'transaction_items.transaction_id' )
+					->join( 'customers', 'customers.id', '=', 'transactions.customer_id' )
+					->join( 'users', 'users.id', '=', 'customers.user_id' )
+					->paginate( 10 );
 	}
 }

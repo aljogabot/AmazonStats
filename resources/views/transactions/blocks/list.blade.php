@@ -6,7 +6,7 @@
 		<td>{{ $transaction->recipient_email }}</td>
 		<td>{{ $transaction->recipient_name }}</td>
 		<td>
-			<a href="javascript:void(0);" class="view-items">
+			<a href="{{ URL::route( 'transaction-transaction-items', [ $transaction->id ] ) }}" class="view-items">
 				({{ $transaction->transactionItemsCount }}) View
 			</a>
 		</td>

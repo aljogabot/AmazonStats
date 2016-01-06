@@ -16,6 +16,11 @@ class TransactionItemRepository extends EloquentRepository {
 		return $this->model->paginate(10);
 	}
 
+	public function getAllPerTransaction()
+	{
+		
+	}
+
 	public function getAllPerUser( $search = '', $user = FALSE )
 	{
 		if( ! $user )

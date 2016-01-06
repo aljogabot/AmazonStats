@@ -44,7 +44,7 @@ Route::group(['middleware' => ['web']], function () {
 				function()
 				{
 					Route::get( '/', [ 'as' => 'transaction-items', 'uses' => 'TransactionItemsController@index' ] );
-					Route::get( 'transaction', [ 'as' => 'transaction-transaction-items', 'uses' => 'TransactionItemsController@transaction' ] );
+					Route::get( 'transaction/{transactionId}', [ 'as' => 'transaction-transaction-items', 'uses' => 'TransactionItemsController@transaction' ] );
 
 					Route::post( '/', [ 'as' => 'transaction-items-list-ajax', 'uses' => 'TransactionItemsController@listTable' ] );
 
