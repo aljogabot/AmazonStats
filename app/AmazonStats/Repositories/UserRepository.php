@@ -28,6 +28,7 @@ class UserRepository extends EloquentRepository {
 		{
 			return $this->model->customers()->where( 'first_name', 'LIKE', "%{$search}%" )
 									->orWhere( 'last_name', 'LIKE', "%{$search}%" )
+									->orWhere( 'name', 'LIKE', "%{$search}%" )
 									->orWhere( 'email', 'LIKE', "%{$search}%" )
 									->paginate( 10 );
 		}
