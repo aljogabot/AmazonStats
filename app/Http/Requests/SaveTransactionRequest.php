@@ -36,8 +36,7 @@ class SaveTransactionRequest extends Request
         return [
             'customer_id' => 'required',
             'amazon_order_id' => 'required',
-            'recipient_name' => 'required',
-            'recipient_email' => 'required'
+            'recipient_name' => 'required'
         ];
     }
 }

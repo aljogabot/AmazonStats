@@ -26,6 +26,11 @@
 			</div>
 
 			<div class="form-group">
+				<label for="amazon_order_item_id">Amazon Order Item ID</label>
+		        <input type="text" id="amazon_order_item_id" name="amazon_order_item_id" class="form-control" placeholder="Amazon Order Item ID" autofocus value="{{ $transactionItem->amazon_order_item_id }}">
+			</div>
+
+			<div class="form-group">
 				<label for="quantity">Quantity</label>
 		        <input type="text" id="quantity" name="quantity" class="form-control" placeholder="Quantity" required autofocus value="{{ $transactionItem->quantity }}">
 			</div>

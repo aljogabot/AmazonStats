@@ -30,8 +30,6 @@ class CustomerSaveRequest extends Request
     {
         return [
             //
-            'first_name' => 'required',
-            'last_name' => 'required',
             'email' => 'required|email|max:225'
         ];
     }

@@ -28,7 +28,7 @@
 
 			<div class="form-group">
 				<label for="recipient_email">Recepient Email</label>
-		        <input type="email" id="recipient_email" name="recipient_email" class="form-control" placeholder="Recipient Email" required autofocus value="{{ $transaction->recipient_email }}">
+		        <input type="email" id="recipient_email" name="recipient_email" class="form-control" placeholder="Recipient Email" autofocus value="{{ $transaction->recipient_email }}">
 			</div>
 	    </div>
 	    <div class="modal-footer">

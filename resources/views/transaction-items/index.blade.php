@@ -25,6 +25,7 @@
           		<th>#</th>
           		<th>Transaction ID</th>
                 <th>Customer Name</th>
+                <th>Amazon Order Item ID</th>
           		<th>Product Name</th>
           		<th>Quantity</th>
                 <th>Payout</th>

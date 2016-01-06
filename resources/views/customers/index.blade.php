@@ -43,5 +43,5 @@
 @stop
 
 @section( 'page-level-scripts' )
-	<script type="text/javascript" src="js/views/customers.list.js"></script>
+	<script type="text/javascript" src="/js/views/customers.list.js"></script>
 @endsection

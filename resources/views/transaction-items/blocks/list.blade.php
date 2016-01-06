@@ -3,6 +3,7 @@
 		<td>{{ $transactionItem->id }}</td>
 		<td>{{ $transactionItem->transaction_amazon_id }}</td>
 		<td>{{ $transactionItem->customer_name }}</td>
+		<td>{{ $transactionItem->amazon_order_item_id }}</td>
 		<td>{{ $transactionItem->amazon_product_name }}</td>
 		<td>{{ $transactionItem->quantity }}</td>
 		<td>${{ $transactionItem->payout }}</td>

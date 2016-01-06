@@ -9,12 +9,17 @@
 
 	    	<div class="form-group">
 				<label for="first_name">First Name</label>
-		        <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name" required autofocus value="{{ $customer->first_name }}">
+		        <input type="text" id="first_name" name="first_name" class="form-control" placeholder="First Name" autofocus value="{{ $customer->first_name }}">
 			</div>
 
 			<div class="form-group">
 				<label for="last_name">Last Name</label>
-		        <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name" required autofocus value="{{ $customer->last_name }}">
+		        <input type="text" id="last_name" name="last_name" class="form-control" placeholder="Last Name" autofocus value="{{ $customer->last_name }}">
+			</div>
+
+			<div class="form-group">
+				<label for="name">Name</label>
+		        <input type="text" id="name" name="name" class="form-control" placeholder="Name" autofocus value="{{ $customer->name }}">
 			</div>
 
 			<div class="form-group">
