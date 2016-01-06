@@ -121,6 +121,8 @@ class ImportDataController extends Controller
 
         }
         
+        return $this->json->success( 'SUCCESS!!! Import data done ....' );
+
 	}
 
 }
