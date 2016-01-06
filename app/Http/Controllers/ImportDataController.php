@@ -54,7 +54,7 @@ class ImportDataController extends Controller
             $amazonOrderId = $lineArray[0];
             $recipientName = $lineArray[24];
 
-            $amazonOrderItemId = $lineArray[5];
+            $amazonOrderItemId = $lineArray[4];
 
             $itemQuantity = $lineArray[15];
 
@@ -110,7 +110,8 @@ class ImportDataController extends Controller
             if( ! $transactionItem )
             {
                 $transactionItem = new TransactionItem;
-                $transactionItem->fill( [ 'amazon_product_id' => $product->id, 'amazon_order_item_id' => $amazonOrderItemId, 'quantity' => $itemQuantity, 'payout' => $payout ] );
+                $arrayData = [ 'amazon_product_id' => $product->id, 'amazon_order_item_id' => $amazonOrderItemId, 'quantity' => $itemQuantity, 'payout' => $payout ];
+                $transactionItem->fill( $arrayData );
                 $transaction->items()->save( $transactionItem );
             } else {
                 $transactionItem->amazon_product_id = $product->id;
