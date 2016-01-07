@@ -34,6 +34,10 @@ class ImportDataController extends Controller
 	public function process( Request $request )
 	{
 		$file = $request->file( 'file' );
+
+        if( empty( $file ) )
+            return $this->json->error( 'Please Upload a File ...' );
+
         $fileContents = file_get_contents( $file );
 
         $fileLines = explode( "\r\n", $fileContents );
