@@ -62,7 +62,9 @@ class ImportDataController extends Controller
             $productName = $lineArray[14];
             $productPrice = $lineArray[17];
 
-            $customer = Customer::whereEmail( $customerEmail )->first();
+            $customer = Customer::where( 'email', '=', $customerEmail )
+                                ->where( 'user_id', '=', $user->id )
+                                ->first();
             if( ! $customer ) 
             {
                 $customer = new Customer;
@@ -74,6 +76,7 @@ class ImportDataController extends Controller
             }
 
             $transaction = Transaction::whereAmazonOrderId( $amazonOrderId )
+                                    ->where( 'customer_id', '=', $customer->id )
                                 ->first();
 
             if( ! $transaction )
@@ -88,6 +91,7 @@ class ImportDataController extends Controller
 
             // Products ...
             $product = AmazonProduct::whereSku( $productSku )
+                                ->where( 'user_id', '=', $user->id )
                             ->first();
 
             if( ! $product )
@@ -105,6 +109,7 @@ class ImportDataController extends Controller
             $payout = $itemQuantity * $product->price;
 
             $transactionItem = TransactionItem::whereAmazonOrderItemId( $amazonOrderItemId )
+                                        ->where( 'transaction_id', '=', $transaction->id )
                                         ->first();
 
             if( ! $transactionItem )
