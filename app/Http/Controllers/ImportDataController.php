@@ -90,6 +90,9 @@ class ImportDataController extends Controller
 
 	public function process( $fileContents )
 	{
+
+        set_time_limit( 600 );
+
         Session::remove( 'file' );		
 
         $fileLines = explode( "\r\n", $fileContents );
