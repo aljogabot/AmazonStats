@@ -7,8 +7,34 @@ ImportData.prototype = {
 
 	construct : function()
 	{
-		this.init_events();
-		this.init_upload_form();
+		this.init_fileupload();
+	},
+
+	init_fileupload : function()
+	{
+		$( '#fileupload' ).fileupload({
+			url: $( '#fileupload' ).data( 'url' ),
+		    maxChunkSize: 1000000, // 1 MB,
+		    dataType: 'json',
+		    done: function( e, data )
+		    {
+		    	if( data.result.success )
+		    	{
+		    		$FormMessageService.setElement( $( 'form[name=import-data-form]' ) );
+					$FormMessageService.success( 'Imported Data Successfully ...' );	
+		    	}
+		    },
+		    progressall: function (e, data) {
+	            var progress = parseInt(data.loaded / data.total * 100, 10);
+	            $('#progress .progress-bar').css(
+	                'width',
+	                progress + '%'
+	            );
+	        },
+    		headers: {
+		        'X-CSRF-Token': $( 'meta[name="csrf-token"]' ).attr( 'content' )
+		    },
+		});
 	},
 
 	init_events : function()

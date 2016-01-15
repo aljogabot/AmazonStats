@@ -17,10 +17,12 @@ elixir(
 		// Copy Bower Dependencies to Resources Folder ...
     	$mix.copy( 'resources/assets/bower_components/jquery/dist/jquery.min.js', 'resources/assets/js/libs/jquery.min.js' );
 		$mix.copy( 'resources/assets/bower_components/bootstrap/dist/js/bootstrap.min.js', 'resources/assets/js/libs/bootstrap.min.js' );
-
+		
 		$mix.copy( 'resources/assets/js/views', 'public/js/views' );
 		$mix.copy( 'resources/assets/fonts', 'public/fonts' );
 		$mix.copy( 'resources/assets/images', 'public/images' );
+
+		$mix.copy( 'resources/assets/bower_components/blueimp-file-upload/js', 'resources/assets/js/libs/blueimp-file-upload' );
 
 		$mix.styles(
 			[
@@ -35,6 +37,8 @@ elixir(
 			[
 				'libs/jquery.min.js',
 				'libs/bootstrap.min.js',
+				'libs/blueimp-file-upload/vendor/jquery.ui.widget.js',
+				'libs/blueimp-file-upload/jquery.fileupload.js',
 				'services/UrlService.js',
 				'services/AjaxService.js',
 				'services/FormMessageService.js',

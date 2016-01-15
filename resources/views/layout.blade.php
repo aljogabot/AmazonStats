@@ -31,6 +31,5 @@
         @include( 'blocks/logout' )
         @section( 'page-level-scripts' )@show
         @section( 'modals' )@show
-
     </body>
 </html>

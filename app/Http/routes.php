@@ -72,6 +72,7 @@ Route::group(['middleware' => ['web']], function () {
 				function()
 				{
 					Route::get( '/', [ 'as' => 'import', 'uses' => 'ImportDataController@index' ] );
+					Route::post( 'upload', [ 'as' => 'import-upload', 'uses' => 'ImportDataController@upload' ] );
 					Route::post( 'process', [ 'as' => 'import-process', 'uses' => 'ImportDataController@process' ] );
 					Route::get( 'delete', [ 'as' => 'delete', 'uses' => 'ImportDataController@delete' ] );
 				}

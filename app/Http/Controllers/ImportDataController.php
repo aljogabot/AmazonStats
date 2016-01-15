@@ -12,6 +12,8 @@ use AmazonStats\Repositories\UserRepository;
 
 use Auth, App\Customer, App\Transaction, App\TransactionItem, App\AmazonProduct;
 
+use AmazonStats\Handlers\UploadHandler;
+
 class ImportDataController extends Controller
 {
     protected $json;
@@ -50,7 +52,31 @@ class ImportDataController extends Controller
         return redirect()->route( 'import' );
     }
 
-	public function process( Request $request )
+    public function upload( Request $request )
+    {
+
+        
+
+            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+                $is_chunked_upload = !empty($_SERVER['HTTP_CONTENT_RANGE']);
+                if ($is_chunked_upload) {
+                    $is_last_chunk = false;
+
+                    // [HTTP_CONTENT_RANGE] => bytes 10000000-17679248/17679249 - last chunk looks like this
+
+                    if (preg_match('|(\d+)/(\d+)|', $_SERVER['HTTP_CONTENT_RANGE'], $range)) {
+
+                        if ($range[1] == $range[2] - 1) {
+                            return $this->process( $request );
+                        }
+                    }
+                }
+            }
+
+            return $this->json->success();
+    }
+
+	public function process( $request )
 	{
 		$file = $request->file( 'file' );
 
@@ -71,33 +97,33 @@ class ImportDataController extends Controller
 
             $lineArray = explode( "\t", $fileLines[ $x ] );
 
-            $customerEmail = $lineArray[10];
-            $customerName = $lineArray[11];
+            $customerEmail = @$lineArray[10];
+            $customerName = @$lineArray[11];
 
-            $amazonOrderId = $lineArray[0];
-            $recipientName = $lineArray[24];
+            $amazonOrderId = @$lineArray[0];
+            $recipientName = @$lineArray[24];
 
-            $amazonOrderItemId = $lineArray[4];
+            $amazonOrderItemId = @$lineArray[4];
 
-            $itemQuantity = $lineArray[15];
+            $itemQuantity = @$lineArray[15];
 
-            $productSku = $lineArray[13];
-            $productName = $lineArray[14];
-            $productPrice = $lineArray[17];
+            $productSku = @$lineArray[13];
+            $productName = @$lineArray[14];
+            $productPrice = @$lineArray[17];
 
-            $shipAddress1 = $lineArray[25];
-            $shipAddress2 = $lineArray[26];
-            $shipAddress3 = $lineArray[27];
-            $shipCity = $lineArray[28];
-            $shipState = $lineArray[29];
+            $shipAddress1 = @$lineArray[25];
+            $shipAddress2 = @$lineArray[26];
+            $shipAddress3 = @$lineArray[27];
+            $shipCity = @$lineArray[28];
+            $shipState = @$lineArray[29];
 
-            $shipPostalCode = $lineArray[30];
-            $shipCountry = $lineArray[31];
+            $shipPostalCode = @$lineArray[30];
+            $shipCountry = @$lineArray[31];
 
-            $carrier = $lineArray[42];
-            $trackingNumber = $lineArray[43];
+            $carrier = @$lineArray[42];
+            $trackingNumber = @$lineArray[43];
 
-            $itemPromotionDiscount = $lineArray[40];
+            $itemPromotionDiscount = @$lineArray[40];
 
             $customer = Customer::where( 'email', '=', $customerEmail )
                                 ->where( 'user_id', '=', $user->id )
