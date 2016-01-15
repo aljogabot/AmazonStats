@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use AmazonStats\Handlers\ResponseHandlers\JsonResponse;
 use AmazonStats\Repositories\UserRepository;
 
-use Auth, App\Customer, App\Transaction, App\TransactionItem, App\AmazonProduct;
+use Auth, Session, App\Customer, App\Transaction, App\TransactionItem, App\AmazonProduct;
 
 use AmazonStats\Handlers\UploadHandler;
 
@@ -55,9 +55,21 @@ class ImportDataController extends Controller
     public function upload( Request $request )
     {
 
-        
+        $file = $request->file( 'file' );
 
-            if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if( empty( $file ) )
+            return $this->json->error( 'Please Upload a File ...' );
+
+        $fileContents = file_get_contents( $file );        
+
+        if( ! Session::has( 'file' ) )
+        {
+            Session::put( 'file', '' );
+        }
+
+        Session::put( 'file', Session::get( 'file' ) . $fileContents );
+
+
                 $is_chunked_upload = !empty($_SERVER['HTTP_CONTENT_RANGE']);
                 if ($is_chunked_upload) {
                     $is_last_chunk = false;
@@ -67,23 +79,18 @@ class ImportDataController extends Controller
                     if (preg_match('|(\d+)/(\d+)|', $_SERVER['HTTP_CONTENT_RANGE'], $range)) {
 
                         if ($range[1] == $range[2] - 1) {
-                            return $this->process( $request );
+                            return $this->process( Session::get( 'file' ) );
                         }
                     }
                 }
-            }
+            
 
             return $this->json->success();
     }
 
-	public function process( $request )
+	public function process( $fileContents )
 	{
-		$file = $request->file( 'file' );
-
-        if( empty( $file ) )
-            return $this->json->error( 'Please Upload a File ...' );
-
-        $fileContents = file_get_contents( $file );
+        Session::remove( 'file' );		
 
         $fileLines = explode( "\r\n", $fileContents );
         $maxLineCount = count( $fileLines );
@@ -203,7 +210,7 @@ class ImportDataController extends Controller
             }
 
         }
-        
+
         return $this->json->success( 'SUCCESS!!! Import data done ....' );
 
 	}
