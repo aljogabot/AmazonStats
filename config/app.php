@@ -156,7 +156,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Jenky\LaravelPlupload\PluploadServiceProvider::class,
+        
 
     ],
 
@@ -204,7 +204,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
 
-        'Plupload' => Jenky\LaravelPlupload\Facades\Plupload::class,
+        
 
     ],
 

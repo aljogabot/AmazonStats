@@ -7,8 +7,7 @@
     "require": {
         "php": ">=5.5.9",
         "laravel/framework": "5.2.*",
-        "doctrine/dbal": "^2.5",
-        "jenky/laravel-plupload": "~1.0"
+        "doctrine/dbal": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
