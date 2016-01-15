@@ -73,6 +73,8 @@ class TransactionItemsController extends Controller
         {
         	$transactionItem = new TransactionItem;
         	$transactionItem->id = 0;
+            $transactionItem->quantity = 0;
+            $transactionItem->item_promotion_discount = 0;
         }
 
         $transactions = $transactionRepository->getAllPerUser();
@@ -85,7 +87,7 @@ class TransactionItemsController extends Controller
                         ->success();
     }
 
-    public function save( $id, TransactionItemSaveRequest $request )
+    public function save( $id, TransactionItemSaveRequest $request, ProductRepository $productRepository )
     {
     	$transactionItem = $this->transactionItemRepository->getById( $id );
 
@@ -94,6 +96,11 @@ class TransactionItemsController extends Controller
 
         if( ! $transactionItem )
             $transactionItem = new TransactionItem;
+
+        $product = $productRepository->getById( $request->get( 'amazon_product_id' ) );
+
+        if( ! $product )
+            return $this->json->error( 'No Product Associated' );
 
         $transactionItem->fill( $request->except( [ 'transaction_id' ] ) );
 

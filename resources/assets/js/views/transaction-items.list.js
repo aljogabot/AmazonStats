@@ -157,6 +157,8 @@ TransactionItemsList.prototype = {
 	{
 		var $self = this;
 
+		$self.update_payout();
+
 		$( 'form[name=transaction-item-form]' ).submit(
 			function( $event ) {
 				$event.preventDefault();
@@ -181,6 +183,59 @@ TransactionItemsList.prototype = {
 
 			}
 		);
+
+		$( '#amazon_product_id' ).change(
+			function()
+			{
+				var $productSelectElement = $( '#amazon_product_id' );
+				var $productId = $( this ).val();
+
+				$http.post( '/products/get-price', { id : $productId },
+					function( $json_response ) {
+						if( $json_response.success ) {
+							$productSelectElement.data( 'selected-product-price', $json_response.product_price );
+							$self.update_payout();
+						} else {
+							alert( 'error from getting product price ...' );
+							return false;
+						}
+					}
+				);
+			}
+		);
+
+		$( '#quantity' ).keyup(
+			function()
+			{
+				if( $( this ).val().length == 0 )
+					$( this ).val( 0 );
+
+				$self.update_payout();
+			}
+		);
+
+		$( '#item_promotion_discount' ).keyup(
+			function()
+			{
+				if( $( this ).val().length == 0 )
+					$( this ).val( 0 );
+
+				$self.update_payout();
+			}
+		);
+
+	},
+
+	update_payout : function()
+	{
+		var $selectedProductPrice = $( '#amazon_product_id' ).data( 'selected-product-price' );
+		var $quantity = $( '#quantity' ).val();
+		var $promotionalDiscount = $( '#item_promotion_discount' ).val();
+
+		$quantity = $quantity == 0 ? 0 : $quantity;
+		$selectedProductPrice = $promotionalDiscount == 0 ? $selectedProductPrice : $selectedProductPrice - $promotionalDiscount;
+
+		$( '#payout' ).val( $selectedProductPrice * $quantity );		
 	},
 
 	delete_transaction_item : function()

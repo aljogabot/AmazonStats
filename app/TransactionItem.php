@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class TransactionItem extends Model
 {
-    protected $fillable = [ 'amazon_order_item_id', 'amazon_product_id', 'quantity', 'payout' ];
+    protected $fillable = [ 'amazon_order_item_id', 'amazon_product_id', 'quantity', 'payout', 'item_promotion_discount' ];
 
     public function transaction()
     {

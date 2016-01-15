@@ -16,9 +16,11 @@ class TransactionItemRepository extends EloquentRepository {
 		return $this->model->paginate(10);
 	}
 
-	public function getAllPerTransaction()
+	public function getById( $id )
 	{
-		
+		return $this->model->with( 'amazonProduct' )
+						->where( 'id', '=', $id )
+						->first();
 	}
 
 	public function getAllPerUser( $search = '', $user = FALSE )

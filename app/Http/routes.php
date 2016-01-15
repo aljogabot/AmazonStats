@@ -63,6 +63,8 @@ Route::group(['middleware' => ['web']], function () {
 					Route::post( 'view/{id}', [ 'as' => 'view-product', 'uses' => 'AmazonProductsController@view' ] );
 					Route::post( 'save/{id}', [ 'as' => 'save-product', 'uses' => 'AmazonProductsController@save' ] );
 					Route::post( 'delete/{id}', [ 'as' => 'delete-product', 'uses' => 'AmazonProductsController@delete' ] );
+
+					Route::post( 'get-price', [ 'as' => 'get-price', 'uses' => 'AmazonProductsController@getPrice' ] );
 				}
 			);
 
@@ -71,6 +73,7 @@ Route::group(['middleware' => ['web']], function () {
 				{
 					Route::get( '/', [ 'as' => 'import', 'uses' => 'ImportDataController@index' ] );
 					Route::post( 'process', [ 'as' => 'import-process', 'uses' => 'ImportDataController@process' ] );
+					Route::get( 'delete', [ 'as' => 'delete', 'uses' => 'ImportDataController@delete' ] );
 				}
 			);
 		}

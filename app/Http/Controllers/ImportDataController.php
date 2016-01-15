@@ -31,6 +31,25 @@ class ImportDataController extends Controller
 		return view( 'import.index' );
 	}
 
+    public function delete()
+    {
+        $user = Auth::user();
+        $customers = $user->customers()->get();
+        foreach( $customers as $customer )
+        {
+            $transactions = $customer->transactions()->get();
+
+            foreach( $transactions as $transaction )
+            {
+                $transaction->items()->delete();
+                $transaction->delete();
+            }
+            $customer->delete();
+        }
+
+        return redirect()->route( 'import' );
+    }
+
 	public function process( Request $request )
 	{
 		$file = $request->file( 'file' );
@@ -66,9 +85,24 @@ class ImportDataController extends Controller
             $productName = $lineArray[14];
             $productPrice = $lineArray[17];
 
+            $shipAddress1 = $lineArray[25];
+            $shipAddress2 = $lineArray[26];
+            $shipAddress3 = $lineArray[27];
+            $shipCity = $lineArray[28];
+            $shipState = $lineArray[29];
+
+            $shipPostalCode = $lineArray[30];
+            $shipCountry = $lineArray[31];
+
+            $carrier = $lineArray[42];
+            $trackingNumber = $lineArray[43];
+
+            $itemPromotionDiscount = $lineArray[40];
+
             $customer = Customer::where( 'email', '=', $customerEmail )
                                 ->where( 'user_id', '=', $user->id )
                                 ->first();
+
             if( ! $customer ) 
             {
                 $customer = new Customer;
@@ -79,14 +113,22 @@ class ImportDataController extends Controller
                 $customer->save();
             }
 
-            $transaction = Transaction::whereAmazonOrderId( $amazonOrderId )
-                                    ->where( 'customer_id', '=', $customer->id )
-                                ->first();
+            $transaction = Transaction::where( 'amazon_order_id', '=', $amazonOrderId )
+                                            ->where( 'customer_id', '=', $customer->id )
+                                            ->first();
 
             if( ! $transaction )
             {
                 $transaction = new Transaction;
-                $transaction->fill( [ 'amazon_order_id' => $amazonOrderId, 'recipient_name' => $recipientName ] );
+
+                $transactionData = [ 
+                    'amazon_order_id' => $amazonOrderId, 'recipient_name' => $recipientName, 'ship_address_1' => $shipAddress1,
+                    'ship_address_2' => $shipAddress2, 'ship_address_3' => $shipAddress3, 'ship_city' => $shipCity,
+                    'ship_state' => $shipState, 'ship_postal_code' => $shipPostalCode, 'ship_postal_country' => $shipCountry, 
+                    'carrier' => $carrier, 'tracking_number' => $trackingNumber
+                ];
+
+                $transaction->fill( $transactionData );
                 $transaction = $customer->transactions()->save( $transaction );
             } else {
                 $transaction->recipient_name = $recipientName;
@@ -96,7 +138,7 @@ class ImportDataController extends Controller
             // Products ...
             $product = AmazonProduct::whereSku( $productSku )
                                 ->where( 'user_id', '=', $user->id )
-                            ->first();
+                                ->first();
 
             if( ! $product )
             {
@@ -110,7 +152,12 @@ class ImportDataController extends Controller
                 $product->save();
             }
 
-            $payout = $itemQuantity * $product->price;
+            if( $itemPromotionDiscount != 0 )
+            {
+                $payout = $itemQuantity * ( $product->price - $itemPromotionDiscount );
+            } else {
+                $payout = $itemQuantity * $product->price;
+            }
 
             $transactionItem = TransactionItem::whereAmazonOrderItemId( $amazonOrderItemId )
                                         ->where( 'transaction_id', '=', $transaction->id )

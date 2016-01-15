@@ -89,4 +89,11 @@ class AmazonProductsController extends Controller
 
         return $this->json->success( 'Product Deleted Successfully ...' );   
     }
+
+    public function getPrice( Request $request )
+    {
+        $product = $this->productRepository->getById( $request->get( 'id' ) );
+        return $this->json->set( 'product_price', $product->price )
+                        ->success();
+    }
 }

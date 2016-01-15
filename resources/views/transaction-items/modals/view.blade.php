@@ -18,9 +18,9 @@
 
 			<div class="form-group">
 				<label for="amazon_product_id">Amazon Product</label>
-		        <select class="form-control" name="amazon_product_id">
+		        <select class="form-control" id="amazon_product_id" name="amazon_product_id" data-selected-product-price="{{ $transactionItem->id == 0 ? 0 : $transactionItem->amazonProduct->price }}">
 		        	@foreach( $products as $product )
-		        		<option value="{{ $product->id }}" {{ $product->id == $transactionItem->amazon_product_id ? 'selected' : '' }} >{{ $product->name }}</option>
+		        		<option data-product-price="{{ $product->price }}" value="{{ $product->id }}" {{ $product->id == $transactionItem->amazon_product_id ? 'selected' : '' }} >{{ $product->name }}</option>
 		        	@endforeach
 		        </select>
 			</div>
@@ -33,6 +33,11 @@
 			<div class="form-group">
 				<label for="quantity">Quantity</label>
 		        <input type="text" id="quantity" name="quantity" class="form-control" placeholder="Quantity" required autofocus value="{{ $transactionItem->quantity }}">
+			</div>
+
+			<div class="form-group">
+				<label for="item_promotion_discount">Item Promotion Discount</label>
+				<input type="text" class="form-control" id="item_promotion_discount" name="item_promotion_discount" placeholder="Item Promotion Discount" autofocus value="{{ $transactionItem->item_promotion_discount }}" />
 			</div>
 
 			<div class="form-group">
