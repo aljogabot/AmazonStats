@@ -1,9 +1,9 @@
 @extends('layout')
 @section('content')
-	<form name="import-data-form" method="POST" action="{{ URL::route( 'import-process' ) }}" accept-charset="UTF-8" enctype="multipart/form-data">
+	<form name="import-data-form" method="POST" action="{{ URL::route( 'import-process' ) }}{{ $sync ? '?sync=true' : '' }}" accept-charset="UTF-8" enctype="multipart/form-data">
 		<div class="row">
 			<div class="col-md-5">
-	            <h1>Import Data</h1>
+	            <h1>{{ $sync ? 'Sync Buyer ID' : 'Import Data' }}</h1>
 	        </div>
 		</div>
 		<br />
@@ -18,7 +18,7 @@
 	            <label for="faq_file">Upload File</label>
 	            <input type="text" id="file_label" name="file_label" class="form-control" placeholder="Please upload your file in ( .txt | .csv )" readonly required autofocus>        
 	            <div class="file-upload btnupl btnupl-primary"><span>Upload</span>
-	                <input class="upload" type="file" id="fileupload" name="file" data-url="{{ URL::route( 'import-upload' ) }}">
+	                <input class="upload" type="file" id="fileupload" name="file" data-url="{{ URL::route( 'import-upload' ) }}{{ $sync ? '?sync=true' : '' }}">
 	            </div>
 	        </div>
 		</div>

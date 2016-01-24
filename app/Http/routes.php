@@ -75,6 +75,8 @@ Route::group(['middleware' => ['web']], function () {
 					Route::post( 'upload', [ 'as' => 'import-upload', 'uses' => 'ImportDataController@upload' ] );
 					Route::post( 'process', [ 'as' => 'import-process', 'uses' => 'ImportDataController@process' ] );
 					Route::get( 'delete', [ 'as' => 'delete', 'uses' => 'ImportDataController@delete' ] );
+
+					Route::get( 'import-sync', [ 'as' => 'import-sync', 'uses' => 'ImportDataController@sync' ] );
 				}
 			);
 		}

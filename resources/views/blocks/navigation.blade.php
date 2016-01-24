@@ -18,8 +18,19 @@
                 <li class="{{ $controller == 'AmazonProductsController' ? 'active' : '' }}">
                     <a href="{{ URL::route( 'products' ) }}">Products</a>
                 </li>
-                <li class="{{ $controller == 'ImportController' ? 'active' : '' }}">
-                    <a href="{{ URL::route( 'import' ) }}">Import Data</a>
+                <li class="{{ $controller == 'ImportController' ? 'active' : '' }} dropdown">
+                    <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">Import <span class="caret"></span></a>
+                    <ul role="menu" class="dropdown-menu">
+                        <li>
+                            <a href="{{ URL::route( 'import' ) }}">Import Data</a>
+                        </li>
+                        <li>
+                            <a href="{{ URL::route( 'import-sync' ) }}">Import Buyer ID</a>
+                        </li>
+                    </ul>
+                </li>
+                
+                    
                 </li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

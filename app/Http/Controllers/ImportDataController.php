@@ -30,7 +30,7 @@ class ImportDataController extends Controller
 
 	public function index()
 	{
-		return view( 'import.index' );
+		return view( 'import.index', [ 'sync' => FALSE ] );
 	}
 
     public function delete()
@@ -60,7 +60,7 @@ class ImportDataController extends Controller
         if( empty( $file ) )
             return $this->json->error( 'Please Upload a File ...' );
 
-        $fileContents = file_get_contents( $file );        
+        $fileContents = file_get_contents( $file ); 
 
         if( ! Session::has( 'file' ) )
         {
@@ -69,31 +69,47 @@ class ImportDataController extends Controller
 
         Session::put( 'file', Session::get( 'file' ) . $fileContents );
 
+        $is_chunked_upload = !empty($_SERVER['HTTP_CONTENT_RANGE']);
+        if ($is_chunked_upload) {
+            $is_last_chunk = false;
 
-                $is_chunked_upload = !empty($_SERVER['HTTP_CONTENT_RANGE']);
-                if ($is_chunked_upload) {
-                    $is_last_chunk = false;
+            // [HTTP_CONTENT_RANGE] => bytes 10000000-17679248/17679249 - last chunk looks like this
 
-                    // [HTTP_CONTENT_RANGE] => bytes 10000000-17679248/17679249 - last chunk looks like this
+            if (preg_match('|(\d+)/(\d+)|', $_SERVER['HTTP_CONTENT_RANGE'], $range)) {
 
-                    if (preg_match('|(\d+)/(\d+)|', $_SERVER['HTTP_CONTENT_RANGE'], $range)) {
+                if ($range[1] == $range[2] - 1) {
 
-                        if ($range[1] == $range[2] - 1) {
-                            return $this->process( Session::get( 'file' ) );
-                        }
-                    }
+                    $fileContents = Session::get( 'file' );
+                    Session::remove( 'file' );
+
+                    // Import Sync Buyer ID
+                    if( isset( $_GET[ 'sync' ] ) )
+                        return $this->processSync( $fileContents );
+
+                    // Import Data
+                    return $this->process( $fileContents );
                 }
-            
+            }
+        } 
 
-            return $this->json->success();
+        if( ! isset( $_SERVER['HTTP_CONTENT_RANGE'] ) ) {
+            $fileContents = Session::get( 'file' );
+            Session::remove( 'file' );
+            // Small File ...
+            // Import Sync Buyer ID
+            if( isset( $_GET[ 'sync' ] ) )
+                return $this->processSync( $fileContents );
+
+            // Import Data
+            return $this->process( $fileContents );    
+        }
+
+        return $this->json->success();
     }
 
 	public function process( $fileContents )
 	{
-
-        set_time_limit( 600 );
-
-        Session::remove( 'file' );		
+        set_time_limit( 800 );
 
         $fileLines = explode( "\r\n", $fileContents );
         $maxLineCount = count( $fileLines );
@@ -217,5 +233,44 @@ class ImportDataController extends Controller
         return $this->json->success( 'SUCCESS!!! Import data done ....' );
 
 	}
+
+    public function sync()
+    {
+        return view( 'import.index', [ 'sync' => TRUE ] );
+    }
+
+    public function processSync( $fileContents )
+    {
+        set_time_limit( 800 );
+
+        $fileLines = explode( "\r\n", $fileContents );
+        $fileLines = explode( "\r", $fileContents );
+        $maxLineCount = count( $fileLines );
+
+        $user = Auth::user();
+
+        for( $x = 0; $x < $maxLineCount; $x++ )
+        {   
+            //dd( $fileLines[ $x ] );
+            $urlArray = parse_url( $fileLines[ $x ] );
+            parse_str( $urlArray['query'], $query );
+            $buyerId = $query[ 'buyerID' ];
+            $orderId = $query[ 'orderID' ];
+
+            $transaction = Transaction::where( 'amazon_order_id', '=', $orderId )
+                            ->with( ['customer.user' => function( $query ) use( $user ) {
+                                $query->where( 'id', '=', $user->id );
+                            }])->first();
+
+            if( ! $transaction )
+                continue;
+
+            $transaction->customer->buyer_id = $buyerId;
+            $transaction->customer->save();
+
+        }
+
+        return $this->json->success( 'SUCCESS!!! Import data done ....' );
+    }
 
 }

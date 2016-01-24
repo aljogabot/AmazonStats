@@ -18,11 +18,18 @@ ImportData.prototype = {
 		    dataType: 'json',
 		    done: function( e, data )
 		    {
+		    	$FormMessageService.setElement( $( 'form[name=import-data-form]' ) );
 		    	if( data.result.success )
 		    	{
-		    		$FormMessageService.setElement( $( 'form[name=import-data-form]' ) );
 					$FormMessageService.success( 'Imported Data Successfully ...' );	
+					return;
 		    	}
+		    	$FormMessageService.error( 'Data Import Failed' );	
+		    },
+		    fail: function(e, data)
+		    {
+		    	$FormMessageService.setElement( $( 'form[name=import-data-form]' ) );
+				$FormMessageService.error( 'Data Import Failed' );	
 		    },
 		    progressall: function (e, data) {
 	            var progress = parseInt(data.loaded / data.total * 100, 10);
