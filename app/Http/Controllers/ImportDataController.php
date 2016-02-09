@@ -109,7 +109,7 @@ class ImportDataController extends Controller
 
 	public function process( $fileContents )
 	{
-        set_time_limit( 600 );
+        //set_time_limit( 800 );
 
         $fileLines = explode( "\r\n", $fileContents );
         $maxLineCount = count( $fileLines );
@@ -241,7 +241,7 @@ class ImportDataController extends Controller
 
     public function processSync( $fileContents )
     {
-        set_time_limit( 600 );
+        //set_time_limit( 800 );
 
         $fileLines = explode( "\r\n", $fileContents );
         $fileLines = explode( "\r", $fileContents );
