@@ -26,6 +26,11 @@
 				<label for="email">Email Address</label>
 		        <input type="email" id="email" name="email" class="form-control" placeholder="Email Address" required autofocus value="{{ $customer->email }}">
 			</div>
+
+			<div class="form-group">
+				<label for="buyer_id">Email Address</label>
+		        <input type="text" id="buyer_id" name="buyer_id" class="form-control" placeholder="Buyer Id" autofocus value="{{ $customer->buyer_id }}">
+			</div>
 	    </div>
 	    <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

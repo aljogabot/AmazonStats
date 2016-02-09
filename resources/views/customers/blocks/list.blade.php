@@ -3,6 +3,7 @@
 		<td>{{ $customer->id }}</td>
 		<td>{{ $customer->name }}</td>
 		<td>{{ $customer->email }}</td>
+		<td>{{ $customer->buyer_id }}</td>
 		<td>
 			<a href="{{ URL::route( 'customer-transactions', [ $customer->id ] ) }}" class="view-transactions">
 				({{ $customer->transactionsCount }}) Transaction(s)
