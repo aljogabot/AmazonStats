@@ -54,7 +54,8 @@ class ImportDataController extends Controller
 
     public function upload( Request $request )
     {
-
+        set_time_limit(0);
+        
         $file = $request->file( 'file' );
 
         if( empty( $file ) )
@@ -68,6 +69,7 @@ class ImportDataController extends Controller
         }
 
         Session::put( 'file', Session::get( 'file' ) . $fileContents );
+        unset( $fileContents );
 
         $is_chunked_upload = !empty($_SERVER['HTTP_CONTENT_RANGE']);
         if ($is_chunked_upload) {
@@ -261,16 +263,24 @@ class ImportDataController extends Controller
             $buyerId = $query[ 'buyerID' ];
             $orderId = $query[ 'orderID' ];
 
-            $transaction = Transaction::where( 'amazon_order_id', '=', $orderId )
+            /*$transaction = Transaction::where( 'amazon_order_id', '=', $orderId )
                             ->with( ['customer.user' => function( $query ) use( $user ) {
                                 $query->where( 'id', '=', $user->id );
-                            }])->first();
+                            }])->first();*/
+
+            $transaction = Transaction::where( 'amazon_order_id', '=', $orderId )
+                                        ->first();
 
             if( ! $transaction )
                 continue;
 
-            $transaction->customer->buyer_id = $buyerId;
-            $transaction->customer->save();
+            $customer = Customer::whereId( $transaction->customer_id )->first();
+
+            if( $customer->user_id != $user->id )
+                continue;            
+
+            $customer->buyer_id = $buyerId;
+            $customer->save();
 
         }
 
