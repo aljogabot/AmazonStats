@@ -253,6 +253,10 @@ class ImportDataController extends Controller
         {   
             //dd( $fileLines[ $x ] );
             $urlArray = parse_url( $fileLines[ $x ] );
+
+            if( ! is_array( $urlArray ) OR ! isset( $urlArray[ 'query' ] ) )
+                continue;
+
             parse_str( $urlArray['query'], $query );
             $buyerId = $query[ 'buyerID' ];
             $orderId = $query[ 'orderID' ];
