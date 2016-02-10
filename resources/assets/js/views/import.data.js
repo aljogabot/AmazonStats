@@ -8,6 +8,8 @@ ImportData.prototype = {
 	construct : function()
 	{
 		this.init_fileupload();
+
+		this.init_paste_form();
 	},
 
 	init_fileupload : function()
@@ -73,6 +75,34 @@ ImportData.prototype = {
 				$http.postUpload( $form.attr( 'action' ), $data,
 					function( $json_response ) {
 						if( $json_response.success ) {
+							$FormMessageService.success( 'Imported Data Successfully ...' );
+						} else {
+							$FormMessageService.error( $json_response.message );
+						}
+					}
+				);
+			}
+		);
+	},
+
+	init_paste_form : function()
+	{
+		$( 'form[name=paste-data-form]' ).submit(
+			function( $event )
+			{
+				$event.preventDefault();
+				var $form = $( this );
+
+				$FormMessageService.setElement( $form );
+				$FormMessageService.notify( 'Processing ...' );
+
+				$http.post(
+					$form.attr( 'action' ),
+					$form.serialize(),
+					function( $json_response )
+					{
+						if( $json_response.success )
+						{
 							$FormMessageService.success( 'Imported Data Successfully ...' );
 						} else {
 							$FormMessageService.error( $json_response.message );

@@ -79,6 +79,9 @@ Route::group(['middleware' => ['web']], function () {
 					Route::get( 'import-sync', [ 'as' => 'import-sync', 'uses' => 'ImportDataController@sync' ] );
 					Route::post( 'remove-session', 'ImportDataController@deleteSession' );
 					Route::get( 'remove-session', 'ImportDataController@deleteSession' );
+
+					Route::get( 'paste-buyer-id', [ 'as' => 'paste-buyer-id', 'uses' => 'ImportDataController@pasteBuyerId' ] );
+					Route::post( 'process-paste-buyer-id', [ 'as' => 'process-paste-buyer-id', 'uses' => 'ImportDataController@processPasteBuyerId' ] );
 				}
 			);
 		}

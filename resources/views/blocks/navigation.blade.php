@@ -27,6 +27,9 @@
                         <li>
                             <a href="{{ URL::route( 'import-sync' ) }}">Import Buyer ID</a>
                         </li>
+                        <li>
+                            <a href="{{ URL::route( 'paste-buyer-id' ) }}">Paste Buyer ID</a>
+                        </li>
                     </ul>
                 </li>
                 
