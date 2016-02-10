@@ -31,7 +31,7 @@ ImportData.prototype = {
 		    	$FormMessageService.setElement( $( 'form[name=import-data-form]' ) );
 				$FormMessageService.error( 'Data Import Failed' );
 
-				//$http.post( $site_config.base_url + 'import/remove-session', {} );
+				$http.post( $site_config.base_url + 'import/remove-session', {} );
 		    },
 		    progressall: function (e, data) {
 	            var progress = parseInt(data.loaded / data.total * 100, 10);
