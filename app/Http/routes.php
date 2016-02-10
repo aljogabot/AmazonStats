@@ -77,6 +77,8 @@ Route::group(['middleware' => ['web']], function () {
 					Route::get( 'delete', [ 'as' => 'delete', 'uses' => 'ImportDataController@delete' ] );
 
 					Route::get( 'import-sync', [ 'as' => 'import-sync', 'uses' => 'ImportDataController@sync' ] );
+					Route::post( 'remove-session', 'ImportDataController@deleteSession' );
+					Route::get( 'remove-session', 'ImportDataController@deleteSession' );
 				}
 			);
 		}

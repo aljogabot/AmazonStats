@@ -2108,7 +2108,9 @@ AjaxService.prototype = {
 			        'X-CSRF-Token': $( 'meta[name="csrf-token"]' ).attr( 'content' )
 			    },
 				success: function( $json_response ) {
-					callback( $json_response );
+					if( callback ) {
+						callback( $json_response );
+					}
 				},
 				error: function( $error ) {
 					var $message = [];
@@ -2149,7 +2151,10 @@ AjaxService.prototype = {
 			        'X-CSRF-Token': $( 'meta[name="csrf-token"]' ).attr( 'content' )
 			    },
 				success: function( $json_response ) {
-					callback( $json_response );
+					if( callback )
+					{
+						callback( $json_response );	
+					}
 				}
 			}
 		);

@@ -52,10 +52,14 @@ class ImportDataController extends Controller
         return redirect()->route( 'import' );
     }
 
+    public function deleteSession()
+    {
+        Session::remove( 'file' );
+        echo Session::get( 'file' );
+    }
+
     public function upload( Request $request )
     {
-        set_time_limit(0);
-
         $file = $request->file( 'file' );
 
         if( empty( $file ) )
@@ -244,7 +248,7 @@ class ImportDataController extends Controller
     public function processSync( $fileContents )
     {
         //set_time_limit( 800 );
-
+        //ini_set( 'memory_limit', '2048M' );
         $fileLines = explode( "\r\n", $fileContents );
         $fileLines = explode( "\r", $fileContents );
         $maxLineCount = count( $fileLines );
