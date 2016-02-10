@@ -55,7 +55,7 @@ class ImportDataController extends Controller
     public function upload( Request $request )
     {
         set_time_limit(0);
-        
+
         $file = $request->file( 'file' );
 
         if( empty( $file ) )
@@ -275,6 +275,9 @@ class ImportDataController extends Controller
                 continue;
 
             $customer = Customer::whereId( $transaction->customer_id )->first();
+
+            if( ! $customer )
+                continue;
 
             if( $customer->user_id != $user->id )
                 continue;            
