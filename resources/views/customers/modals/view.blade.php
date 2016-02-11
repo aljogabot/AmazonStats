@@ -28,7 +28,7 @@
 			</div>
 
 			<div class="form-group">
-				<label for="buyer_id">Email Address</label>
+				<label for="buyer_id">Buyer Id</label>
 		        <input type="text" id="buyer_id" name="buyer_id" class="form-control" placeholder="Buyer Id" autofocus value="{{ $customer->buyer_id }}">
 			</div>
 	    </div>

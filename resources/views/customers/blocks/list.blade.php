@@ -11,7 +11,6 @@
 		</td>
 		<td data-id="{{ $customer->id }}" data-name="{{ $customer->name }}" data-delete-url="{{ URL::route( 'delete-customer', [ $customer->id ] ) }}">
 			<button class="btn btn-success edit-customer">Edit</button>
-            <button class="btn btn-danger delete-customer">Delete</button>
             <a href="{{ URL::route( 'customer-transactions', [ $customer->id ] ) }}" class="view-transactions btn btn-info">
 				View Transactions
 			</a>
