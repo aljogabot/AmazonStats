@@ -304,6 +304,9 @@ class ImportDataController extends Controller
         $data = $request->get( 'buyerIdList' );
         $fileContents = trim( $data );
 
+        if( empty( $fileContents ) )
+            return $this->json->error( 'Paste Box Must Not Be Empty ...' );
+
         $fileLines = explode( "\r\n", $fileContents );
         $fileLines = explode( "\r", $fileContents );
         $maxLineCount = count( $fileLines );
