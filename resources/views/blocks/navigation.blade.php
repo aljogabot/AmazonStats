@@ -18,6 +18,9 @@
                 <li class="{{ $controller == 'AmazonProductsController' ? 'active' : '' }}">
                     <a href="{{ URL::route( 'products' ) }}">Products</a>
                 </li>
+                <li class="{{ $controller == 'ReviewsController' ? 'active' : '' }}">
+                    <a href="{{ URL::route( 'reviews' ) }}">Reviews</a>
+                </li>
                 <li class="{{ $controller == 'ImportController' ? 'active' : '' }} dropdown">
                     <a aria-expanded="false" role="button" data-toggle="dropdown" class="dropdown-toggle" href="#">Import <span class="caret"></span></a>
                     <ul role="menu" class="dropdown-menu">

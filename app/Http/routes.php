@@ -91,7 +91,7 @@ Route::group(['middleware' => ['web']], function () {
 			Route::group( [ 'prefix' => 'reviews' ],
 				function()
 				{
-					Route::get( '/', 'ReviewsController@index' );
+					Route::get( '/', [ 'as' => 'reviews', 'uses' => 'ReviewsController@index' ] );
 				}
 			);
 		}

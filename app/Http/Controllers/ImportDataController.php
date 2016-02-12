@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use AmazonStats\Handlers\ResponseHandlers\JsonResponse;
 use AmazonStats\Repositories\UserRepository;
 
-use Auth, Session, App\Customer, App\Transaction, App\TransactionItem, App\AmazonProduct;
+use Auth, Session, App\Customer, App\Transaction, App\TransactionItem, App\AmazonProduct, App\CustomerReview;
 
 use AmazonStats\Handlers\UploadHandler;
 
@@ -375,33 +375,45 @@ class ImportDataController extends Controller
 
         for( $x = 0; $x < $maxLineCount; $x++ )
         {   
-            //dd( $fileLines[ $x ] );
-            $urlArray = parse_url( $fileLines[ $x ] );
+            $url = $fileLines[ $x ];
+            $urlExploded = explode( '/', $url );
+
+            $urlArray = parse_url( $url );
 
             if( ! is_array( $urlArray ) OR ! isset( $urlArray[ 'query' ] ) )
                 continue;
 
-            parse_str( $urlArray['query'], $query );
-            $buyerId = $query[ 'buyerID' ];
-            $orderId = $query[ 'orderID' ];
+            $buyerId = $urlExploded[ 5 ];
 
-            $transaction = Transaction::where( 'amazon_order_id', '=', $orderId )
-                                        ->first();
+            parse_str( $urlArray[ 'query' ], $query );
+            $sku = $query[ 'ASIN' ];
+            $sku = str_replace( '-', '', $sku );
 
-            if( ! $transaction )
-                continue;
-
-            $customer = Customer::whereId( $transaction->customer_id )->first();
+            $customer = Customer::whereBuyerId( $buyerId )
+                                 ->first();
 
             if( ! $customer )
                 continue;
 
-            if( $customer->user_id != $user->id )
-                continue;            
+            $product = AmazonProduct::whereSku( $sku )
+                                    ->first();
 
-            $customer->buyer_id = $buyerId;
-            $customer->save();
+            if( ! $product )
+                continue;
 
+            $customerReview = CustomerReview::where( 'customer_id', '=', $customer->id )
+                                            ->where( 'amazon_product_id', '=', $product->id )
+                                            ->first();
+
+            if( $customerReview )
+                continue;
+
+            $customerReview = new CustomerReview;
+
+            $customerReview->customer_id = $customer->id;
+            $customerReview->amazon_product_id = $product->id;
+            $customerReview->link = $url;
+            $customerReview->save();
         }
 
         return $this->json->success( 'SUCCESS!!! Import data done ....' );
