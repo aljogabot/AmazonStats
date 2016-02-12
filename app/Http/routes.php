@@ -82,6 +82,16 @@ Route::group(['middleware' => ['web']], function () {
 
 					Route::get( 'paste-buyer-id', [ 'as' => 'paste-buyer-id', 'uses' => 'ImportDataController@pasteBuyerId' ] );
 					Route::post( 'process-paste-buyer-id', [ 'as' => 'process-paste-buyer-id', 'uses' => 'ImportDataController@processPasteBuyerId' ] );
+
+					Route::get( 'reviews', [ 'as' => 'import-reviews', 'uses' => 'ImportDataController@reviews' ] );
+					Route::post( 'process-reviews', [ 'as' => 'process-import-reviews', 'uses' => 'ImportDataController@processReviews' ] );
+				}
+			);
+
+			Route::group( [ 'prefix' => 'reviews' ],
+				function()
+				{
+					Route::get( '/', 'ReviewsController@index' );
 				}
 			);
 		}

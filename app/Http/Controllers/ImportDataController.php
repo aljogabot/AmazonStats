@@ -352,4 +352,57 @@ class ImportDataController extends Controller
         return $this->json->success( 'SUCCESS!!! Import data done ....' );
     }
 
+    public function reviews()
+    {
+        return view( 'import.reviews' );
+    }
+
+    public function processReviews( Request $request )
+    {   
+        $data = $request->get( 'reviews' );
+        $fileContents = trim( $data );
+
+        if( empty( $fileContents ) )
+            return $this->json->error( 'Paste Box Must Not Be Empty ...' );
+
+        $fileLines = explode( "\r\n", $fileContents );
+        $fileLines = explode( "\r", $fileContents );
+        $maxLineCount = count( $fileLines );
+
+        $user = Auth::user();
+
+        for( $x = 0; $x < $maxLineCount; $x++ )
+        {   
+            //dd( $fileLines[ $x ] );
+            $urlArray = parse_url( $fileLines[ $x ] );
+
+            if( ! is_array( $urlArray ) OR ! isset( $urlArray[ 'query' ] ) )
+                continue;
+
+            parse_str( $urlArray['query'], $query );
+            $buyerId = $query[ 'buyerID' ];
+            $orderId = $query[ 'orderID' ];
+
+            $transaction = Transaction::where( 'amazon_order_id', '=', $orderId )
+                                        ->first();
+
+            if( ! $transaction )
+                continue;
+
+            $customer = Customer::whereId( $transaction->customer_id )->first();
+
+            if( ! $customer )
+                continue;
+
+            if( $customer->user_id != $user->id )
+                continue;            
+
+            $customer->buyer_id = $buyerId;
+            $customer->save();
+
+        }
+
+        return $this->json->success( 'SUCCESS!!! Import data done ....' );
+    }
+
 }
