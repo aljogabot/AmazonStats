@@ -30,6 +30,14 @@ class ImportDataController extends Controller
 
 	public function index()
 	{
+        $products = AmazonProduct::all();
+
+        foreach( $products as $product )
+        {
+            $product->sku = str_replace( '-', '', $product->sku );
+            $product->save();
+        }
+
 		return view( 'import.index', [ 'sync' => FALSE ] );
 	}
 
@@ -192,6 +200,8 @@ class ImportDataController extends Controller
                 $transaction->recipient_name = $recipientName;
                 $transaction->save();
             }
+
+            $productSku = str_replace( '-', '', $productSku );
 
             // Products ...
             $product = AmazonProduct::whereSku( $productSku )
