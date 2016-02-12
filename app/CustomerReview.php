@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomerReview extends Model
 {
-    protected $fillable = [ 'link', 'notes' ];
+    protected $fillable = [ 'link', 'notes', 'amazon_product_id', 'customer_id' ];
 
     public function customer()
     {
@@ -15,6 +15,7 @@ class CustomerReview extends Model
 
     public function product()
     {
-    	return $this->belongsTo( AmazonProduct::class );
+    	return $this->belongsTo( AmazonProduct::class, 'amazon_product_id' );
     }
+
 }

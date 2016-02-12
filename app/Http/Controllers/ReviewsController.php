@@ -7,11 +7,10 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-use AmazonStats\Repositories\UserRepository, AmazonStats\Repositories\AmazonProductRepository;
 use AmazonStats\Repositories\CustomerReviewRepository;
 use AmazonStats\Handlers\ResponseHandlers\JsonResponse;
 
-use Gate, Auth, View, App\CustomerReview;
+use Gate, Auth, View, App\CustomerReview, App\AmazonProduct, App\Customer;
 
 class ReviewsController extends Controller
 {
@@ -27,71 +26,63 @@ class ReviewsController extends Controller
     public function index()
     {
     	$reviews = $this->customerReviewRepository->getAll();
-    	return view( 'reviews.index', compact( 'reviews' ) );
+        return view( 'reviews.index', compact( 'reviews' ) );
     }
 
     public function listTable( Request $request )
     {
-        $products = $this->userRepository->getAllProducts( $request->search );
+        $reviews = $this->customerReviewRepository->getAllWithSearch( $request->search );
 
-        if( $products->total() > $products->perPage() )
-            $this->json->set( 'paginate_content', $products->render()->toHtml() );
+        if( $reviews->total() > $reviews->perPage() )
+            $this->json->set( 'paginate_content', $reviews->render()->toHtml() );
 
         return $this->json
-                    ->set( 'content', view( 'products.blocks.list', compact( 'products' ) )->render() )
+                    ->set( 'content', view( 'reviews.blocks.list', compact( 'reviews' ) )->render() )
                     ->success();       
     }
 
     public function view( $id )
     {
-    	$product = $this->productRepository->getById( $id );
+    	$review = $this->customerReviewRepository->getById( $id );
 
-        if( ! $product )
+        if( ! $review )
         {
-            $product = new AmazonProduct;
-            $product->id = 0;
+            $review = new CustomerReview;
+            $review->id = 0;
         }
 
-        if( Gate::denies( 'show', $product ) && $id != 0 )
-            return $this->json->error( 'You Cannot View or Alter Someone\'s Product ...' );
+        $products   = AmazonProduct::all();
+        $customers   = Customer::where( 'user_id', '=', auth()->user()->id )
+                                ->get();
 
-        $content = View::make( 'products.modals.view', compact( 'product' ) )
+        $content = View::make( 'reviews.modals.view', compact( 'review', 'products', 'customers' ) )
                         ->render();
 
         return $this->json->set( 'content', $content )
                         ->success();                 
     }
 
-    public function save( $id, ProductSaveRequest $request )
+    public function save( $id, Request $request )
     {
-        $product = $this->productRepository->getById( $id );
+        $review = $this->customerReviewRepository->getById( $id );
 
-        if( ! $product )
-            $product = new AmazonProduct;
+        if( ! $review )
+            $review = new CustomerReview;
 
-        $product->fill( $request->all() );
+        $review->fill( $request->all() );
         
-        Auth::user()->products()->save( $product );
+        $review->save();
 
-        return $this->json->success( 'Product Saved Successfully ...' );
+        return $this->json->success( 'Review Saved Successfully ...' );
     }
 
     public function delete( $id )
     {
-        $product = $this->productRepository->getById( $id );
+        $review = $this->customerReviewRepository->getById( $id );
 
-        if( Gate::denies( 'show', $product ) )
-            return $this->json->error( 'You Cannot View or Alter Someone\'s Product ...' );
+        $review->delete();
 
-        $product->delete();
-
-        return $this->json->success( 'Product Deleted Successfully ...' );   
+        return $this->json->success( 'Review Deleted Successfully ...' );   
     }
 
-    public function getPrice( Request $request )
-    {
-        $product = $this->productRepository->getById( $request->get( 'id' ) );
-        return $this->json->set( 'product_price', $product->price )
-                        ->success();
-    }
 }

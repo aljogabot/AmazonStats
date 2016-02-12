@@ -92,6 +92,11 @@ Route::group(['middleware' => ['web']], function () {
 				function()
 				{
 					Route::get( '/', [ 'as' => 'reviews', 'uses' => 'ReviewsController@index' ] );
+					Route::post( '/', [ 'as' => 'reviews-list-ajax', 'uses' => 'ReviewsController@listTable' ] );
+
+					Route::post( 'view/{id}', [ 'as' => 'view-review', 'uses' => 'ReviewsController@view' ] );
+					Route::post( 'save/{id}', [ 'as' => 'save-review', 'uses' => 'ReviewsController@save' ] );
+					Route::post( 'delete/{id}', [ 'as' => 'delete-review', 'uses' => 'ReviewsController@delete' ] );
 				}
 			);
 		}

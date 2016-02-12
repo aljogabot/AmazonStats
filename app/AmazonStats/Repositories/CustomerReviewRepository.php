@@ -17,6 +17,14 @@ class CustomerReviewRepository extends EloquentRepository {
 						->paginate();
 	}
 
+	public function getAllWithSearch( $search = '' )
+	{
+		return $this->model->with( [ 'customer', 'product' ] )
+						->orWhere( 'notes', 'LIKE', "%{$search}%" )
+						->orWhere( 'link', 'LIKE', "%{$search}%" )
+						->paginate();
+	}
+
 	public function getById( $id )
 	{
 		return $this->model->with( [ 'customer', 'product' ] )
