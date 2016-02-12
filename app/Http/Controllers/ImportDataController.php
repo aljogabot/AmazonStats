@@ -30,15 +30,7 @@ class ImportDataController extends Controller
 
 	public function index()
 	{
-        $products = AmazonProduct::all();
-
-        foreach( $products as $product )
-        {
-            $product->sku = str_replace( '-', '', $product->sku );
-            $product->save();
-        }
-
-		return view( 'import.index', [ 'sync' => FALSE ] );
+        return view( 'import.index', [ 'sync' => FALSE ] );
 	}
 
     public function delete()
