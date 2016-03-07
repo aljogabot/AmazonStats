@@ -76,7 +76,13 @@ class CustomersController extends Controller
         $customer->fill( $request->all() );
         $customer->setName();
 
-        \Auth::user()->customers()->save( $customer );
+        if( ! $customer ) 
+        {
+            \Auth::user()->customers()->save( $customer );
+        }
+        else {
+            $customer->save();
+        }
 
         return $this->json->success( 'Customer Saved Successfully ...' );
     }
