@@ -8,6 +8,36 @@ class Customer extends Model
 {
     protected $fillable = [ 'email', 'first_name', 'last_name', 'name', 'emailed', 'buyer_id' ];
 
+    public function first_name()
+    {
+        if( ! empty( $this->first_name ) )
+            return $this->first_name;
+
+        if( ! empty( $this->name ) )
+        {
+            $name = explode( ' ', $this->name );
+            array_pop( $name );
+
+            return implode( ' ', $name );
+        }
+
+        return NULL;
+    }
+
+    public function last_name()
+    {
+        if( ! empty( $this->last_name ) )
+            return $this->last_name;
+
+        if( ! empty( $this->name ) )
+        {
+            $name = explode( ' ', $this->name );
+            return array_pop( $name );
+        }
+
+        return NULL;
+    }
+
     public function setName()
     {
         $this->name = $this->first_name . ' ' . $this->last_name;
